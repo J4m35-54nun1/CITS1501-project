@@ -1,0 +1,12 @@
+# Python Cache and Bytecode
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# System and IDE files
+.vscode/
+.DS_Store
+Thumbsdb
+
+# Secret files
+.env
