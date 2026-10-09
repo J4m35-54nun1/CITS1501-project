@@ -508,7 +508,12 @@
         </div>
         <div id="map" role="application" aria-label="Interactive map of Australian states and local government areas"></div>
         <div id="outlying-areas" class="outlying-areas" hidden></div>
-        <div class="map-legend"><span>Share of total population</span><span class="legend-gradient" aria-hidden="true"></span><span>Lower</span><span>Higher</span></div>
+        <div class="map-legend">
+          <span id="legend-title">Share of total population</span>
+          <span id="legend-min">Lower</span>
+          <span class="legend-gradient" id="legend-gradient" aria-hidden="true"></span>
+          <span id="legend-max">Higher</span>
+        </div>
         <p class="map-footnote">
           Source counts use the ABS category “Aboriginal and/or Torres Strait Islander”. The supplied Census tables do not separately identify Aboriginal-only, Torres Strait Islander-only, or people recorded as both, so those three percentages cannot be shown. Total population includes all Census response categories.
         </p>
@@ -540,6 +545,7 @@
         "Western Australia": "western_australia_",
       };
       const stateColours = ["#e6edda", "#c4d8bd", "#9fc3a5", "#70a487", "#417c63", "#174b3e"];
+      const lgaColours = ["#e6edda", "#c4d8bd", "#9fc3a5", "#70a487", "#417c63", "#174b3e"];
       const map = L.map("map", {
         zoomControl: true,
         scrollWheelZoom: false,
@@ -551,6 +557,7 @@
       let lgaLayer;
       let selectedState = null;
       let lgaRows = [];
+      let maxLgaCount = 0;
       let selectedYear = 2021;
       let summaryRows = [];
 
@@ -595,6 +602,50 @@
         if (!Number.isFinite(share)) return "#d7ddd5";
         const index = Math.min(stateColours.length - 1, Math.floor(share / 2));
         return stateColours[index];
+      }
+
+      function interpolateColour(start, end, amount) {
+        const startValue = Number.parseInt(start.slice(1), 16);
+        const endValue = Number.parseInt(end.slice(1), 16);
+        const channels = [16, 8, 0].map((shift) => {
+          const startChannel = (startValue >> shift) & 255;
+          const endChannel = (endValue >> shift) & 255;
+          return Math.round(startChannel + (endChannel - startChannel) * amount);
+        });
+        return `#${channels.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+      }
+
+      function colorForLgaCount(count) {
+        if (!Number.isFinite(count)) return "#d7ddd5";
+        const scaled = maxLgaCount ? Math.max(0, Math.min(1, count / maxLgaCount)) : 0;
+        const lastColour = lgaColours.length - 1;
+        const stop = scaled * lastColour;
+        const lowerIndex = Math.floor(stop);
+        const upperIndex = Math.min(lastColour, lowerIndex + 1);
+        return interpolateColour(lgaColours[lowerIndex], lgaColours[upperIndex], stop - lowerIndex);
+      }
+
+      function updateMapLegend(mode, maximum = 0) {
+        const title = document.getElementById("legend-title");
+        const minimum = document.getElementById("legend-min");
+        const max = document.getElementById("legend-max");
+        const gradient = document.getElementById("legend-gradient");
+        if (mode === "lga-count") {
+          title.textContent = "Aboriginal and/or Torres Strait Islander people per LGA";
+          minimum.textContent = "0";
+          max.textContent = numberFormat.format(maximum);
+          gradient.style.background = `linear-gradient(90deg, ${lgaColours.join(", ")})`;
+          gradient.setAttribute(
+            "aria-label",
+            `LGA count gradient from 0 to ${numberFormat.format(maximum)} people`
+          );
+        } else {
+          title.textContent = "Share of total population";
+          minimum.textContent = "Lower";
+          max.textContent = "Higher";
+          gradient.style.background = "linear-gradient(90deg, #e6edda, #79a889, #174b3e)";
+          gradient.removeAttribute("aria-label");
+        }
       }
 
       function escapeHtml(value) {
@@ -694,6 +745,12 @@
         );
         const mappedNames = new Set(features.map((feature) => feature.properties.LGA_NAME21));
         const currentRows = lgaRows.filter((row) => row.census_year === selectedYear);
+        const mappedRows = currentRows.filter((row) => mappedNames.has(row.region_name));
+        maxLgaCount = mappedRows.reduce(
+          (maximum, row) => Math.max(maximum, row.indigenous),
+          0
+        );
+        updateMapLegend("lga-count", maxLgaCount);
         const outlyingRows = currentRows.filter((row) => !mappedNames.has(row.region_name));
         const outlyingPanel = document.getElementById("outlying-areas");
         if (outlyingRows.length) {
@@ -711,7 +768,15 @@
         lgaLayer = L.geoJSON(
           { type: "FeatureCollection", features },
           {
-            style: () => ({ color: "#658273", weight: 0.75, fillColor: "#82ae93", fillOpacity: 0.72 }),
+            style: (feature) => {
+              const metric = metricForLga(feature.properties.LGA_NAME21);
+              return {
+                color: "#658273",
+                weight: 0.75,
+                fillColor: colorForLgaCount(metric ? metric.indigenous : NaN),
+                fillOpacity: 0.82,
+              };
+            },
             onEachFeature: lgaEvents,
             smoothFactor: 0.7,
           }
@@ -729,6 +794,8 @@
       function showStates() {
         selectedState = null;
         lgaRows = [];
+        maxLgaCount = 0;
+        updateMapLegend("state-share");
         if (lgaLayer) map.removeLayer(lgaLayer);
         document.getElementById("outlying-areas").hidden = true;
         document.getElementById("back-button").hidden = true;
