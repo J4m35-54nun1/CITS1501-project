@@ -1,0 +1,20 @@
+            Australian Bureau of Statistics,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5
+"Census of Population and Housing - Counts of Aboriginal and Torres Strait Islander Australians, 2021",,,,,
+Released at 11.30am (Canberra time) 31 August 2022,,,,,
+"Table 2.1: Australian Statistical Geography Standard (ASGS) Indigenous Structure, Australian Capital Territory, 2021",,,,,
+,,,,,
+"Australian Statistical Geography Standard (ASGS) Indigenous Structure, Australian Capital Territory(a)",,,,,
+Indigenous Region (IREG) code,Indigenous Region (IREG) name,Indigenous Area (IARE) code,Indigenous Area (IARE) name,Indigenous Location (ILOC) code,Indigenous Location (ILOC) name
+IREG801,ACT,IARE801001,Canberra - North,ILOC80100101,Belconnen
+IREG801,ACT,IARE801001,Canberra - North,ILOC80100102,Braddon - Kowen
+IREG801,ACT,IARE801001,Canberra - North,ILOC80100103,Gungahlin
+IREG801,ACT,IARE801002,Canberra - South,ILOC80100201,Narrabundah - Weston
+IREG801,ACT,IARE801002,Canberra - South,ILOC80100202,Tuggeranong
+IREG801,ACT,IARE801003,Stromlo - Namadgi,ILOC80100301,Stromlo - Namadgi
+IREG894,No usual address (ACT),IARE894994,No usual address (ACT),ILOC89499494,No usual address (ACT)
+IREG897,Migratory - Offshore - Shipping (ACT),IARE897997,Migratory - Offshore - Shipping (ACT),ILOC89799797,Migratory - Offshore - Shipping (ACT)
+(a) The Indigenous Structure is a geographical standard for the publication and analysis of statistics about the Aboriginal and/or Torres Strait Islander peoples of Australia.,,,,,
+"Statistical Areas Level 1 (SA1s) aggregate to Indigenous Locations which aggregate to Indigenous Areas, and they in turn aggregate to Indigenous Regions. At each hierarchical level, all of Geographic Australia is covered without gaps or overlaps.",,,,,
+"For further information, see the Australian Statistical Geography Standard (ASGS) Edition 3.",,,,,
+,,,,,
+© Commonwealth of Australia 2022,,,,,

@@ -1,0 +1,103 @@
+            Australian Bureau of Statistics,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5
+"Census of Population and Housing - Counts of Aboriginal and Torres Strait Islander Australians, 2021",,,,,
+Released at 11.30am (Canberra time) 31 August 2022,,,,,
+"Table 2.1: Australian Statistical Geography Standard (ASGS) Indigenous Structure, Victoria, 2021",,,,,
+,,,,,
+"Australian Statistical Geography Standard (ASGS) Indigenous Structure, Victoria(a)",,,,,
+Indigenous Region (IREG) code,Indigenous Region (IREG) name,Indigenous Area (IARE) code,Indigenous Area (IARE) name,Indigenous Location (ILOC) code,Indigenous Location (ILOC) name
+IREG201,Melbourne,IARE201001,Brimbank,ILOC20100101,Keilor
+IREG201,Melbourne,IARE201001,Brimbank,ILOC20100102,Sunshine
+IREG201,Melbourne,IARE201002,Cardinia,ILOC20100201,Cardinia
+IREG201,Melbourne,IARE201003,Craigieburn - Sunbury,ILOC20100301,Craigieburn - Sunbury
+IREG201,Melbourne,IARE201004,Cranbourne - Narre Warren,ILOC20100401,Cranbourne
+IREG201,Melbourne,IARE201004,Cranbourne - Narre Warren,ILOC20100402,Hallam - Berwick - Pearcedale
+IREG201,Melbourne,IARE201005,Frankston,ILOC20100501,Chelsea
+IREG201,Melbourne,IARE201005,Frankston,ILOC20100502,Frankston - East
+IREG201,Melbourne,IARE201005,Frankston,ILOC20100503,Frankston - West
+IREG201,Melbourne,IARE201006,Greater Dandenong,ILOC20100601,Greater Dandenong
+IREG201,Melbourne,IARE201007,Knox,ILOC20100701,Wantrina - Rowville - Ferntree Gully
+IREG201,Melbourne,IARE201008,Maribyrnong - Moonee Valley,ILOC20100801,Maribyrnong
+IREG201,Melbourne,IARE201008,Maribyrnong - Moonee Valley,ILOC20100802,Moonee Valley
+IREG201,Melbourne,IARE201009,Maroondah,ILOC20100901,Maroondah
+IREG201,Melbourne,IARE201010,Melbourne - East,ILOC20101001,Bayside
+IREG201,Melbourne,IARE201010,Melbourne - East,ILOC20101002,Boroondara
+IREG201,Melbourne,IARE201010,Melbourne - East,ILOC20101003,Glen Eira
+IREG201,Melbourne,IARE201011,Melbourne - North-East,ILOC20101101,Heidelberg
+IREG201,Melbourne,IARE201011,Melbourne - North-East,ILOC20101102,Manningham
+IREG201,Melbourne,IARE201011,Melbourne - North-East,ILOC20101103,Nillumbik
+IREG201,Melbourne,IARE201011,Melbourne - North-East,ILOC20101104,Watsonia
+IREG201,Melbourne,IARE201012,Melbourne - Port Phillip,ILOC20101201,Melbourne - Central
+IREG201,Melbourne,IARE201012,Melbourne - Port Phillip,ILOC20101202,Port Phillip
+IREG201,Melbourne,IARE201012,Melbourne - Port Phillip,ILOC20101203,Yarra
+IREG201,Melbourne,IARE201013,Melton,ILOC20101301,Melton
+IREG201,Melbourne,IARE201014,Monash,ILOC20101401,Mount Waverley
+IREG201,Melbourne,IARE201014,Monash,ILOC20101402,Oakleigh
+IREG201,Melbourne,IARE201014,Monash,ILOC20101403,Wheelers Hill
+IREG201,Melbourne,IARE201015,Moreland - Broadmeadows,ILOC20101501,Broadmeadows
+IREG201,Melbourne,IARE201015,Moreland - Broadmeadows,ILOC20101502,Brunswick
+IREG201,Melbourne,IARE201015,Moreland - Broadmeadows,ILOC20101503,Coburg
+IREG201,Melbourne,IARE201015,Moreland - Broadmeadows,ILOC20101504,Moreland - North
+IREG201,Melbourne,IARE201016,Mornington Peninsula,ILOC20101601,Mornington - East
+IREG201,Melbourne,IARE201016,Mornington Peninsula,ILOC20101602,Mornington - South
+IREG201,Melbourne,IARE201016,Mornington Peninsula,ILOC20101603,Mornington - West
+IREG201,Melbourne,IARE201017,Northcote - Preston - Whittlesea,ILOC20101701,Northcote
+IREG201,Melbourne,IARE201017,Northcote - Preston - Whittlesea,ILOC20101702,Preston
+IREG201,Melbourne,IARE201017,Northcote - Preston - Whittlesea,ILOC20101703,Whittlesea
+IREG201,Melbourne,IARE201018,Whitehorse,ILOC20101801,Box Hill
+IREG201,Melbourne,IARE201018,Whitehorse,ILOC20101802,Nunawading - East
+IREG201,Melbourne,IARE201018,Whitehorse,ILOC20101803,Nunawading - West
+IREG201,Melbourne,IARE201019,Wyndham - Altona,ILOC20101901,Altona
+IREG201,Melbourne,IARE201019,Wyndham - Altona,ILOC20101902,Tarneit - Hoppers Crossing
+IREG201,Melbourne,IARE201019,Wyndham - Altona,ILOC20101903,Werribee - Whyndam Vale
+IREG201,Melbourne,IARE201020,Yarra Ranges,ILOC20102001,Yarra Ranges
+IREG202,Victoria exc. Melbourne,IARE202001,Ballarat,ILOC20200101,Ballarat
+IREG202,Victoria exc. Melbourne,IARE202002,Baw Baw,ILOC20200201,Baw Baw
+IREG202,Victoria exc. Melbourne,IARE202003,Bendigo,ILOC20200301,Ascot - White Hills
+IREG202,Victoria exc. Melbourne,IARE202003,Bendigo,ILOC20200302,Bendigo
+IREG202,Victoria exc. Melbourne,IARE202003,Bendigo,ILOC20200303,Bendigo - Surrounds
+IREG202,Victoria exc. Melbourne,IARE202003,Bendigo,ILOC20200304,Eaglehawk
+IREG202,Victoria exc. Melbourne,IARE202003,Bendigo,ILOC20200305,East Bendigo
+IREG202,Victoria exc. Melbourne,IARE202003,Bendigo,ILOC20200306,Maiden Gully - Kangaroo Flats
+IREG202,Victoria exc. Melbourne,IARE202004,Campaspe - Shepparton - Moira,ILOC20200401,Campaspe - West
+IREG202,Victoria exc. Melbourne,IARE202004,Campaspe - Shepparton - Moira,ILOC20200402,Echuca
+IREG202,Victoria exc. Melbourne,IARE202004,Campaspe - Shepparton - Moira,ILOC20200403,Kyabram
+IREG202,Victoria exc. Melbourne,IARE202004,Campaspe - Shepparton - Moira,ILOC20200404,Moira
+IREG202,Victoria exc. Melbourne,IARE202004,Campaspe - Shepparton - Moira,ILOC20200405,Shepparton
+IREG202,Victoria exc. Melbourne,IARE202005,Castlemaine - Kerang,ILOC20200501,Castlemaine - Kerang
+IREG202,Victoria exc. Melbourne,IARE202006,Geelong - Queenscliff,ILOC20200601,Geelong - Queenscliff
+IREG202,Victoria exc. Melbourne,IARE202007,Gippsland,ILOC20200701,Bairnsdale
+IREG202,Victoria exc. Melbourne,IARE202007,Gippsland,ILOC20200702,East Gippsland
+IREG202,Victoria exc. Melbourne,IARE202007,Gippsland,ILOC20200703,Lake Tyers
+IREG202,Victoria exc. Melbourne,IARE202007,Gippsland,ILOC20200704,Wellington (Vic.)
+IREG202,Victoria exc. Melbourne,IARE202008,Latrobe,ILOC20200801,Moe - Yallourn
+IREG202,Victoria exc. Melbourne,IARE202008,Latrobe,ILOC20200802,Morwell
+IREG202,Victoria exc. Melbourne,IARE202008,Latrobe,ILOC20200803,Traralgon - Churchill
+IREG202,Victoria exc. Melbourne,IARE202009,Macedon Ranges - Moorabool,ILOC20200901,Macedon Ranges
+IREG202,Victoria exc. Melbourne,IARE202009,Macedon Ranges - Moorabool,ILOC20200902,Moorabool
+IREG202,Victoria exc. Melbourne,IARE202010,Mildura,ILOC20201001,Mildura
+IREG202,Victoria exc. Melbourne,IARE202011,South Gippsland - Bass Coast,ILOC20201101,Bass Coast
+IREG202,Victoria exc. Melbourne,IARE202011,South Gippsland - Bass Coast,ILOC20201102,South Gippsland
+IREG202,Victoria exc. Melbourne,IARE202012,South-West Central Victoria,ILOC20201201,Corangamite - Golden Plains
+IREG202,Victoria exc. Melbourne,IARE202012,South-West Central Victoria,ILOC20201202,Framlingham
+IREG202,Victoria exc. Melbourne,IARE202012,South-West Central Victoria,ILOC20201203,Moyne - Ararat - Pyrenees
+IREG202,Victoria exc. Melbourne,IARE202013,Southern Grampians - Glenelg,ILOC20201301,Glenelg North - Heywood
+IREG202,Victoria exc. Melbourne,IARE202013,Southern Grampians - Glenelg,ILOC20201302,Portland
+IREG202,Victoria exc. Melbourne,IARE202013,Southern Grampians - Glenelg,ILOC20201303,Southern Grampians
+IREG202,Victoria exc. Melbourne,IARE202014,Swan Hill,ILOC20201401,Swan Hill
+IREG202,Victoria exc. Melbourne,IARE202014,Swan Hill,ILOC20201402,Swan Hill  - Robinvale
+IREG202,Victoria exc. Melbourne,IARE202014,Swan Hill,ILOC20201403,Swan Hill  - Surrounds
+IREG202,Victoria exc. Melbourne,IARE202015,Upper Goulburn Valley,ILOC20201501,Benalla
+IREG202,Victoria exc. Melbourne,IARE202015,Upper Goulburn Valley,ILOC20201502,Strathbogie - Mansfield - Murimbindi
+IREG202,Victoria exc. Melbourne,IARE202016,Wallan - Seymour,ILOC20201601,Wallan - Seymour
+IREG202,Victoria exc. Melbourne,IARE202017,Warrnambool,ILOC20201701,Warrnambool
+IREG202,Victoria exc. Melbourne,IARE202018,Wimmera,ILOC20201801,Wimmera
+IREG202,Victoria exc. Melbourne,IARE202019,Wodonga,ILOC20201901,Alpine - Towong - Indigo
+IREG202,Victoria exc. Melbourne,IARE202019,Wodonga,ILOC20201902,Wangaratta
+IREG202,Victoria exc. Melbourne,IARE202019,Wodonga,ILOC20201903,Wodonga
+IREG294,No usual address (Vic.),IARE294994,No usual address (Vic.),ILOC29499494,No usual address (Vic.)
+IREG297,Migratory - Offshore - Shipping (Vic.),IARE297997,Migratory - Offshore - Shipping (Vic.),ILOC29799797,Migratory - Offshore - Shipping (Vic.)
+(a) The Indigenous Structure is a geographical standard for the publication and analysis of statistics about the Aboriginal and/or Torres Strait Islander peoples of Australia.,,,,,
+"Statistical Areas Level 1 (SA1s) aggregate to Indigenous Locations which aggregate to Indigenous Areas, and they in turn aggregate to Indigenous Regions. At each hierarchical level, all of Geographic Australia is covered without gaps or overlaps.",,,,,
+"For further information, see the Australian Statistical Geography Standard (ASGS) Edition 3.",,,,,
+,,,,,
+© Commonwealth of Australia 2022,,,,,
