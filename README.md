@@ -6,7 +6,7 @@ An interactive web application exploring Aboriginal and Torres Strait Islander p
 The **Australian Aboriginal and Torres Strait Islander population Explorer** enables users to analyse demogrphic distributions, compute regional population metrics, compare state/territory statistical, and view interactive visualisations. The applicaiton uses 2021 Australian Bureau of Statistics (ABS) Census data.
 
 ## Dataset Information
-* **Source:** Australian Bureau of Statistics (ABS) 2021 Census
+* **Source:** Australian Bureau of Statistics (ABS) 2021 Census (taken from https://www.abs.gov.au/statistics/people/aboriginal-and-torres-strait-islander-peoples/census-population-and-housing-counts-aboriginal-and-torres-strait-islander-australians/2021#new-south-wales)
 * **Coverage:** Local Government Areas (LGAs) across 8 states and Territories
 * **Licensing** Creative Commons Attribution 4.0 international (CC BY 4.0)
 
