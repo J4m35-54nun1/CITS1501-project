@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#102521">
+    <title>First Peoples Census Explorer</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    >
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17312c;
+        --muted: #64736e;
+        --paper: #f5f6f1;
+        --card: #fffefa;
+        --line: #e4e8df;
+        --forest: #174b3e;
+        --green: #317b61;
+        --lime: #dce9a4;
+        --ochre: #db8e50;
+        --shadow: 0 20px 55px rgba(26, 51, 44, .08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 90% 0%, rgba(220, 233, 164, .25), transparent 30rem),
+          var(--paper);
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+      }
+
+      button, select { font: inherit; }
+
+      .page {
+        width: min(1440px, calc(100% - 56px));
+        margin: 0 auto;
+        padding: 32px 0 48px;
+      }
+
+      .masthead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 56px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--forest);
+        font-family: Manrope, sans-serif;
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border-radius: 13px 13px 13px 4px;
+        background: var(--forest);
+        color: white;
+        font-size: 17px;
+      }
+
+      .edition {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+      }
+
+      h1, h2, p { margin-top: 0; }
+
+      h1, h2, .big-number {
+        font-family: Manrope, sans-serif;
+      }
+
+      h1 {
+        max-width: 880px;
+        margin-bottom: 16px;
+        font-size: clamp(38px, 5.3vw, 72px);
+        font-weight: 700;
+        letter-spacing: -.065em;
+        line-height: 1.02;
+      }
+
+      .lede {
+        max-width: 710px;
+        margin-bottom: 38px;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.65;
+      }
+
+      .overview {
+        display: grid;
+        grid-template-columns: minmax(260px, .86fr) minmax(380px, 1.14fr);
+        gap: 24px;
+        margin-bottom: 26px;
+      }
+
+      .card {
+        border: 1px solid rgba(220, 226, 215, .85);
+        border-radius: 22px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+      }
+
+      .headline-card {
+        position: relative;
+        overflow: hidden;
+        min-height: 245px;
+        padding: 30px;
+        background:
+          radial-gradient(circle at 98% 0%, rgba(220, 233, 164, .23), transparent 15rem),
+          #173b33;
+        color: #fff;
+      }
+
+      .headline-card::after {
+        position: absolute;
+        right: -34px;
+        bottom: -110px;
+        width: 230px;
+        height: 230px;
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .headline-card .eyebrow { color: #c8db8d; }
+
+      .big-number {
+        margin: 16px 0 12px;
+        font-size: clamp(40px, 5vw, 62px);
+        font-weight: 700;
+        letter-spacing: -.065em;
+        line-height: 1;
+      }
+
+      .metric-label {
+        max-width: 340px;
+        margin: 0;
+        color: rgba(255,255,255,.78);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .change {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 24px;
+        padding: 9px 12px;
+        border: 1px solid rgba(255,255,255,.17);
+        border-radius: 999px;
+        background: rgba(255,255,255,.08);
+        color: #f3f6ec;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .change .arrow { color: #dce9a4; font-size: 16px; }
+
+      .chart-card { padding: 26px 28px 21px; }
+
+      .card-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .card-heading h2, .map-heading h2 {
+        margin-bottom: 7px;
+        font-size: 20px;
+        letter-spacing: -.035em;
+      }
+
+      .card-heading p, .map-heading p {
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .chart {
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        gap: clamp(25px, 8vw, 92px);
+        height: 142px;
+        margin: 14px 10px 0;
+        padding: 0 0 24px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .bar-column {
+        display: grid;
+        width: 72px;
+        height: 100%;
+        grid-template-rows: 17px minmax(0, 1fr) 17px;
+        justify-items: center;
+        gap: 8px;
+      }
+
+      .bar-value {
+        align-self: end;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .bar-track {
+        display: flex;
+        width: 42px;
+        height: 100%;
+        align-items: end;
+      }
+
+      .bar {
+        width: 42px;
+        min-height: 5px;
+        flex: 0 0 auto;
+        border-radius: 8px 8px 3px 3px;
+        background: #a9c29e;
+        transition: height .35s ease;
+      }
+
+      .bar-column.latest .bar { background: var(--ochre); }
+      .bar-year { color: var(--ink); font-size: 12px; font-weight: 700; }
+
+      .chart-note {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      .map-card {
+        overflow: hidden;
+        padding: 26px 28px 18px;
+      }
+
+      .map-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .map-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .select-wrap { position: relative; }
+
+      select, .back-button {
+        min-height: 42px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        background: white;
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .back-button {
+        cursor: pointer;
+      }
+
+      .back-button:hover { border-color: var(--green); }
+      .back-button[hidden] { display: none; }
+
+      #map {
+        height: min(62vw, 590px);
+        min-height: 380px;
+        border: 1px solid #e2e8df;
+        border-radius: 16px;
+        background: #eaf0eb;
+      }
+
+      .leaflet-container { font-family: "DM Sans", sans-serif; }
+      .leaflet-tooltip {
+        padding: 11px 13px;
+        border: 1px solid #d9e1d9;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(23, 49, 44, .13);
+        color: var(--ink);
+      }
+
+      .tooltip-title { margin-bottom: 5px; font-weight: 700; }
+      .tooltip-value { color: var(--forest); font-size: 13px; font-weight: 700; }
+      .tooltip-note { margin-top: 6px; color: var(--muted); font-size: 11px; }
+
+      .map-legend {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .outlying-areas {
+        margin-top: 16px;
+        padding: 15px 17px;
+        border: 1px solid #e9dfca;
+        border-radius: 13px;
+        background: #fbf7ec;
+      }
+
+      .outlying-areas[hidden] { display: none; }
+      .outlying-areas h3 { margin: 0 0 6px; font-size: 13px; }
+      .outlying-areas p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .outlying-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 11px; }
+      .outlying-item { padding: 8px 10px; border-radius: 9px; background: #fffefa; font-size: 12px; }
+
+      .legend-gradient {
+        width: 126px;
+        height: 9px;
+        border-radius: 9px;
+        background: linear-gradient(90deg, #e6edda, #79a889, #174b3e);
+      }
+
+      .map-footnote {
+        max-width: 920px;
+        margin: 15px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .status {
+        margin: 13px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .status.error { color: #a23d2e; }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        clip-path: inset(50%);
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 820px) {
+        .page { width: min(100% - 32px, 680px); padding-top: 20px; }
+        .masthead { margin-bottom: 40px; }
+        .overview { grid-template-columns: 1fr; }
+        .map-heading { flex-direction: column; }
+        #map { height: 66vw; min-height: 340px; }
+      }
+
+      @media (max-width: 520px) {
+        .page { width: calc(100% - 22px); padding-top: 14px; }
+        .edition { font-size: 11px; }
+        .brand { font-size: 11px; }
+        .brand-mark { width: 33px; height: 33px; }
+        h1 { font-size: 39px; }
+        .lede { font-size: 15px; }
+        .headline-card, .chart-card, .map-card { padding: 21px; }
+        .card-heading { flex-direction: column; }
+        .map-controls { width: 100%; }
+        select { flex: 1; }
+        #map { min-height: 390px; }
+        .footer { flex-direction: column; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="masthead">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">✳</span> People &amp; place</div>
+        <div class="edition">Australian Census Explorer · 2011—2021</div>
+      </header>
+
+      <section aria-labelledby="page-title">
+        <p class="eyebrow">A living picture across place and time</p>
+        <h1 id="page-title">First Peoples,<br>by place.</h1>
+        <p class="lede">
+          Explore Census counts of people recorded as Aboriginal and/or Torres Strait Islander
+          across Australia, its states and territories, and local government areas.
+        </p>
+      </section>
+
+      <section class="overview" aria-label="National population overview">
+        <article class="card headline-card">
+          <p class="eyebrow">Latest available Census · 2021</p>
+          <p class="big-number" id="latest-total" aria-live="polite">Loading…</p>
+          <p class="metric-label">people recorded as Aboriginal and/or Torres Strait Islander across states and territories</p>
+          <div class="change" id="change-summary" aria-live="polite"></div>
+        </article>
+
+        <article class="card chart-card">
+          <div class="card-heading">
+            <div>
+              <h2>Population over time</h2>
+              <p>Combined Aboriginal and/or Torres Strait Islander count</p>
+            </div>
+          </div>
+          <div class="chart" id="national-chart" role="img" aria-label="Population counts for 2011, 2016, and 2021"></div>
+          <p class="chart-note">The latest available year in the supplied data is 2021. National totals are summed from the state and territory GCCSA areas.</p>
+        </article>
+      </section>
+
+      <section class="card map-card" aria-labelledby="map-title">
+        <div class="map-heading">
+          <div>
+            <p class="eyebrow">Explore the map</p>
+            <h2 id="map-title">Where people live</h2>
+            <p id="map-subtitle">Hover over a state or territory for its population. Select it to explore LGAs.</p>
+          </div>
+          <div class="map-controls">
+            <button type="button" class="back-button" id="back-button" hidden>← All states</button>
+            <label class="select-wrap">
+              <span class="visually-hidden">Census year</span>
+              <select id="year-select" aria-label="Select census year">
+                <option value="2021" selected>2021 Census</option>
+                <option value="2016">2016 Census</option>
+                <option value="2011">2011 Census</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div id="map" role="application" aria-label="Interactive map of Australian states and local government areas"></div>
+        <div id="outlying-areas" class="outlying-areas" hidden></div>
+        <div class="map-legend"><span>Share of total population</span><span class="legend-gradient" aria-hidden="true"></span><span>Lower</span><span>Higher</span></div>
+        <p class="map-footnote">
+          Source counts use the ABS category “Aboriginal and/or Torres Strait Islander”. The supplied Census tables do not separately identify Aboriginal-only, Torres Strait Islander-only, or people recorded as both, so those three percentages cannot be shown. Total population includes all Census response categories.
+        </p>
+        <p id="map-status" class="status" role="status">Loading map data…</p>
+      </section>
+
+      <footer class="footer">
+        <span>Geography: ABS ASGS 2021 state/territory and LGA boundaries.</span>
+        <span>Counts: ABS Census data supplied with this project.</span>
+      </footer>
+    </main>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script>
+      const numberFormat = new Intl.NumberFormat("en-AU");
+      const stateSummaries = new Map();
+      const statePrefixes = {
+        "Australian Capital Territory": "australian_capital_territory_",
+        "New South Wales": "new_south_wales_",
+        "Northern Territory": "northern_territory_",
+        Queensland: "queensland_",
+        "South Australia": "south_australia_",
+        Tasmania: "tasmania_",
+        Victoria: "victoria_",
+        "Western Australia": "western_australia_",
+      };
+      const stateColours = ["#e6edda", "#c4d8bd", "#9fc3a5", "#70a487", "#417c63", "#174b3e"];
+      const map = L.map("map", {
+        zoomControl: true,
+        scrollWheelZoom: false,
+        zoomSnap: 0.25,
+        preferCanvas: true,
+      });
+      let boundaries;
+      let stateLayer;
+      let lgaLayer;
+      let selectedState = null;
+      let lgaRows = [];
+      let selectedYear = 2021;
+      let summaryRows = [];
+
+      function setStatus(message, isError = false) {
+        const status = document.getElementById("map-status");
+        status.textContent = message;
+        status.classList.toggle("error", isError);
+      }
+
+      async function fetchJson(url) {
+        const response = await fetch(url);
+        if (!response.ok) {
+          const body = await response.json().catch(() => ({}));
+          throw new Error(body.error || `Request failed (${response.status})`);
+        }
+        return response.json();
+      }
+
+      function metricForState(name, year) {
+        return stateSummaries.get(`${name}|${year}`);
+      }
+
+      function metricForLga(name) {
+        return lgaRows.find((row) => row.region_name === name);
+      }
+
+      function colorForShare(share) {
+        if (!Number.isFinite(share)) return "#d7ddd5";
+        const index = Math.min(stateColours.length - 1, Math.floor(share / 2));
+        return stateColours[index];
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (character) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[character]);
+      }
+
+      function tooltipHtml(name, metric) {
+        const safeName = escapeHtml(name);
+        if (!metric) {
+          return `<div class="tooltip-title">${safeName}</div><div>No matching Census count is available.</div>`;
+        }
+        const percent = Number(metric.indigenous_proportion).toFixed(1);
+        return `
+          <div class="tooltip-title">${safeName}</div>
+          <div class="tooltip-value">${numberFormat.format(metric.indigenous)} people · ${percent}%</div>
+          <div>Total population: ${numberFormat.format(metric.total)}</div>
+          <div>Non-Indigenous: ${numberFormat.format(metric.non_indigenous)} · Not stated: ${numberFormat.format(metric.not_stated)}</div>
+          <div class="tooltip-note">“Aboriginal and/or Torres Strait Islander” is one combined ABS category.</div>`;
+      }
+
+      function styleState(feature) {
+        const name = feature.properties.STE_NAME21;
+        const metric = metricForState(name, selectedYear);
+        return {
+          color: "#789287",
+          weight: 1.1,
+          opacity: 1,
+          fillColor: colorForShare(metric ? metric.indigenous_proportion : NaN),
+          fillOpacity: 0.91,
+        };
+      }
+
+      function stateEvents(feature, layer) {
+        const name = feature.properties.STE_NAME21;
+        layer.bindTooltip(() => tooltipHtml(name, metricForState(name, selectedYear)), {
+          sticky: true,
+          direction: "auto",
+        });
+        layer.on({
+          mouseover: (event) => event.target.setStyle({ weight: 2.2, color: "#163d32", fillOpacity: 1 }),
+          mouseout: () => stateLayer.resetStyle(layer),
+          click: () => {
+            if (metricForState(name, selectedYear)) selectState(feature);
+          },
+        });
+      }
+
+      function lgaEvents(feature, layer) {
+        const name = feature.properties.LGA_NAME21;
+        const metric = metricForLga(name);
+        layer.bindTooltip(() => tooltipHtml(name, metricForLga(name)), {
+          sticky: true,
+          direction: "auto",
+        });
+        layer.on({
+          mouseover: (event) => event.target.setStyle({ weight: 2.1, color: "#174b3e", fillOpacity: 1 }),
+          mouseout: () => lgaLayer.resetStyle(layer),
+        });
+      }
+
+      async function selectState(feature) {
+        selectedState = feature;
+        const name = feature.properties.STE_NAME21;
+        setStatus(`Loading ${name} LGA counts…`);
+        document.getElementById("back-button").hidden = false;
+        document.getElementById("map-title").textContent = name;
+        document.getElementById("map-subtitle").textContent = "Hover over an LGA to see its combined Indigenous count and share of the total population.";
+        try {
+          const url = `/api/data?region_type=lga&state=${encodeURIComponent(name)}&year=${selectedYear}&limit=1000`;
+          const payload = await fetchJson(url);
+          lgaRows = payload.data;
+          showLgas(feature.properties.STE_CODE21, payload.total);
+        } catch (error) {
+          setStatus(error.message, true);
+        }
+      }
+
+      function showLgas(stateCode, sourceRecordCount) {
+        if (stateLayer) map.removeLayer(stateLayer);
+        if (lgaLayer) map.removeLayer(lgaLayer);
+        const features = boundaries.lgas.features.filter(
+          (feature) => feature.properties.STE_CODE21 === stateCode
+        );
+        const mappedNames = new Set(features.map((feature) => feature.properties.LGA_NAME21));
+        const outlyingRows = lgaRows.filter((row) => !mappedNames.has(row.region_name));
+        const outlyingPanel = document.getElementById("outlying-areas");
+        if (outlyingRows.length) {
+          outlyingPanel.hidden = false;
+          outlyingPanel.innerHTML =
+            "<h3>Additional areas in this Census table</h3>" +
+            "<p>These records are included in the source table but do not have a polygon in this state’s boundary layer.</p>" +
+            `<div class="outlying-list">${outlyingRows.map((row) =>
+              `<span class="outlying-item">${escapeHtml(row.region_name)}: ${numberFormat.format(row.indigenous)} people (${Number(row.indigenous_proportion).toFixed(1)}%)</span>`
+            ).join("")}</div>`;
+        } else {
+          outlyingPanel.hidden = true;
+          outlyingPanel.replaceChildren();
+        }
+        lgaLayer = L.geoJSON(
+          { type: "FeatureCollection", features },
+          {
+            style: () => ({ color: "#658273", weight: 0.75, fillColor: "#82ae93", fillOpacity: 0.72 }),
+            onEachFeature: lgaEvents,
+            smoothFactor: 0.7,
+          }
+        ).addTo(map);
+        if (lgaLayer.getLayers().length) {
+          map.fitBounds(lgaLayer.getBounds(), { padding: [18, 18], maxZoom: 7 });
+        }
+        setStatus(
+          outlyingRows.length
+            ? `${features.length} mapped LGA boundaries; ${outlyingRows.length} additional of ${sourceRecordCount} Census table records are listed below.`
+            : `${features.length} LGA boundaries for ${selectedYear}.`
+        );
+      }
+
+      function showStates() {
+        selectedState = null;
+        lgaRows = [];
+        if (lgaLayer) map.removeLayer(lgaLayer);
+        document.getElementById("outlying-areas").hidden = true;
+        document.getElementById("back-button").hidden = true;
+        document.getElementById("map-title").textContent = "Where people live";
+        document.getElementById("map-subtitle").textContent = "Hover over a state or territory for its population. Select it to explore LGAs.";
+        stateLayer = L.geoJSON(
+          {
+            type: "FeatureCollection",
+            features: boundaries.states.features.filter((feature) =>
+              statePrefixes[feature.properties.STE_NAME21]
+            ),
+          },
+          { style: styleState, onEachFeature: stateEvents, smoothFactor: 0.7 }
+        ).addTo(map);
+        map.fitBounds(stateLayer.getBounds(), { padding: [20, 20] });
+        setStatus("Hover over a state or territory. Click one to zoom into its local government areas.");
+      }
+
+      function renderSummary() {
+        const years = [2011, 2016, 2021];
+        const totals = years.map((year) => ({
+          year,
+          value: summaryRows
+            .filter((row) => row.census_year === year)
+            .reduce((sum, row) => sum + row.indigenous, 0),
+        }));
+        const latest = totals[2];
+        const previous = totals[1];
+        const difference = latest.value - previous.value;
+        const changePercent = previous.value ? (difference / previous.value) * 100 : 0;
+        document.getElementById("latest-total").textContent = numberFormat.format(latest.value);
+        const increased = difference >= 0;
+        document.getElementById("change-summary").innerHTML =
+          `<span class="arrow" aria-hidden="true">${increased ? "↗" : "↘"}</span>` +
+          `${increased ? "Increased" : "Decreased"} ${numberFormat.format(Math.abs(difference))} ` +
+          `(${Math.abs(changePercent).toFixed(1)}%) since 2016`;
+        const maxValue = Math.max(...totals.map((item) => item.value));
+        document.getElementById("national-chart").innerHTML = totals
+          .map((item, index) => {
+            const height = maxValue ? Math.max(5, (item.value / maxValue) * 100) : 0;
+            return `
+              <div class="bar-column ${index === totals.length - 1 ? "latest" : ""}" aria-label="${item.year}: ${numberFormat.format(item.value)} people">
+                <span class="bar-value">${numberFormat.format(item.value)}</span>
+                <span class="bar-track"><span class="bar" style="height:${height}%"></span></span>
+                <span class="bar-year">${item.year}</span>
+              </div>`;
+          })
+          .join("");
+      }
+
+      async function updateYear(year) {
+        selectedYear = Number(year);
+        if (selectedState) {
+          await selectState(selectedState);
+        } else if (stateLayer) {
+          stateLayer.setStyle(styleState);
+        }
+      }
+
+      async function initialise() {
+        try {
+          const [statesPayload, boundariesPayload] = await Promise.all([
+            fetchJson("/api/states"),
+            fetchJson("/assets/australia_boundaries_2021.json"),
+          ]);
+          summaryRows = statesPayload.data;
+          summaryRows.forEach((row) => {
+            stateSummaries.set(`${row.state_name}|${row.census_year}`, row);
+          });
+          boundaries = boundariesPayload;
+          renderSummary();
+          showStates();
+        } catch (error) {
+          setStatus(error.message, true);
+          document.getElementById("latest-total").textContent = "Unavailable";
+        }
+      }
+
+      document.getElementById("back-button").addEventListener("click", showStates);
+      document.getElementById("year-select").addEventListener("change", (event) => {
+        updateYear(event.target.value).catch((error) => setStatus(error.message, true));
+      });
+      initialise();
+    </script>
+  </body>
+</html>
