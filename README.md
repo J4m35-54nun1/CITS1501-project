@@ -31,9 +31,16 @@ python ".\Interface (Frontend)\Interface.py"
 ```
 
 Open `http://127.0.0.1:5000` in a browser. Hover over a state or territory to
-see its combined Indigenous count and share; click it to zoom to LGA boundaries.
-The year selector updates the map. The chart compares combined counts for 2011,
-2016, and 2021.
+see its “Aboriginal and/or Torres Strait Islander” count, share of the total
+population, and change since the previous Census. Select it to zoom to Local
+Government Area (LGA) boundaries. The year selector updates the map. The chart
+compares counts for 2011, 2016, and 2021; hover over or focus a bar to see its
+share of the whole population.
+
+Stop the service with **Ctrl+C in the same terminal that started it**. The
+launcher does not use Flask's development reloader and closes its listening
+socket when interrupted. If the service was started in another terminal, stop
+it from that terminal; Ctrl+C in a different terminal cannot interrupt it.
 
 The map uses official 2021 ABS State/Territory and LGA boundaries, converted to
 GeoJSON at `Interface (Frontend)/assets/australia_boundaries_2021.json`. The

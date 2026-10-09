@@ -158,18 +158,21 @@
 
       .big-number {
         margin: 16px 0 12px;
-        font-size: clamp(40px, 5vw, 62px);
-        font-weight: 700;
-        letter-spacing: -.065em;
+        color: #e7f29d;
+        font-size: clamp(52px, 6vw, 78px);
+        font-weight: 800;
+        letter-spacing: -.075em;
         line-height: 1;
+        text-shadow: 0 3px 18px rgba(220, 233, 164, .22);
       }
 
       .metric-label {
-        max-width: 340px;
+        max-width: 360px;
         margin: 0;
-        color: rgba(255,255,255,.78);
-        font-size: 14px;
-        line-height: 1.55;
+        color: rgba(255,255,255,.9);
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.5;
       }
 
       .change {
@@ -177,16 +180,19 @@
         align-items: center;
         gap: 8px;
         margin-top: 24px;
-        padding: 9px 12px;
-        border: 1px solid rgba(255,255,255,.17);
-        border-radius: 999px;
-        background: rgba(255,255,255,.08);
-        color: #f3f6ec;
-        font-size: 13px;
-        font-weight: 600;
+        padding: 11px 15px;
+        border: 1px solid rgba(231,242,157,.72);
+        border-radius: 13px;
+        background: #e7f29d;
+        box-shadow: 0 5px 20px rgba(0,0,0,.16);
+        color: #173b33;
+        font-size: 15px;
+        font-weight: 800;
       }
 
-      .change .arrow { color: #dce9a4; font-size: 16px; }
+      .change .arrow { color: #286a4e; font-size: 19px; }
+      .change.decreased { border-color: #f0ae77; background: #f0ae77; }
+      .change.decreased .arrow { color: #6c3219; }
 
       .chart-card { padding: 26px 28px 21px; }
 
@@ -210,51 +216,76 @@
         line-height: 1.5;
       }
 
+      .map-heading #map-subtitle {
+        max-width: 650px;
+        margin-top: 10px;
+        padding: 10px 13px;
+        border-left: 4px solid var(--ochre);
+        border-radius: 0 10px 10px 0;
+        background: #f7f2e9;
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
       .chart {
         display: flex;
         align-items: end;
         justify-content: center;
         gap: clamp(25px, 8vw, 92px);
-        height: 142px;
+        height: 174px;
         margin: 14px 10px 0;
-        padding: 0 0 24px;
+        padding: 0 0 27px;
         border-bottom: 1px solid var(--line);
       }
 
       .bar-column {
+        position: relative;
         display: grid;
-        width: 72px;
+        width: 82px;
         height: 100%;
         grid-template-rows: 17px minmax(0, 1fr) 17px;
         justify-items: center;
         gap: 8px;
+        cursor: help;
       }
 
       .bar-value {
         align-self: end;
-        color: var(--muted);
-        font-size: 11px;
-        font-weight: 600;
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 800;
       }
 
       .bar-track {
         display: flex;
-        width: 42px;
+        width: 52px;
         height: 100%;
         align-items: end;
       }
 
       .bar {
-        width: 42px;
+        width: 52px;
         min-height: 5px;
         flex: 0 0 auto;
-        border-radius: 8px 8px 3px 3px;
-        background: #a9c29e;
-        transition: height .35s ease;
+        border: 1px solid rgba(23,49,44,.1);
+        border-radius: 10px 10px 3px 3px;
+        background: linear-gradient(180deg, #559874, #286a4e);
+        box-shadow: 0 5px 14px rgba(40,106,78,.2);
+        transition: height .35s ease, filter .18s ease, transform .18s ease;
       }
 
-      .bar-column.latest .bar { background: var(--ochre); }
-      .bar-year { color: var(--ink); font-size: 12px; font-weight: 700; }
+      .bar-column.latest .bar {
+        background: linear-gradient(180deg, #f3aa62, #c96a30);
+        box-shadow: 0 6px 17px rgba(201,106,48,.3);
+      }
+      .bar-column:hover .bar, .bar-column:focus-visible .bar {
+        filter: saturate(1.25) brightness(1.06);
+        transform: scaleX(1.08);
+      }
+      .bar-column:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; }
+      .bar-year { color: var(--ink); font-size: 13px; font-weight: 800; }
 
       .chart-note {
         margin: 12px 0 0;
@@ -321,6 +352,13 @@
 
       .tooltip-title { margin-bottom: 5px; font-weight: 700; }
       .tooltip-value { color: var(--forest); font-size: 13px; font-weight: 700; }
+      .tooltip-change {
+        margin-top: 5px;
+        color: #246b4c;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .tooltip-change.decreased { color: #a14f2c; }
       .tooltip-note { margin-top: 6px; color: var(--muted); font-size: 11px; }
 
       .map-legend {
@@ -433,7 +471,7 @@
         <article class="card headline-card">
           <p class="eyebrow">Latest available Census · 2021</p>
           <p class="big-number" id="latest-total" aria-live="polite">Loading…</p>
-          <p class="metric-label">people recorded as Aboriginal and/or Torres Strait Islander across states and territories</p>
+          <p class="metric-label">Aboriginal and/or Torres Strait Islander people across Australia’s states and territories</p>
           <div class="change" id="change-summary" aria-live="polite"></div>
         </article>
 
@@ -441,10 +479,10 @@
           <div class="card-heading">
             <div>
               <h2>Population over time</h2>
-              <p>Combined Aboriginal and/or Torres Strait Islander count</p>
+              <p>Counts and share of the whole population</p>
             </div>
           </div>
-          <div class="chart" id="national-chart" role="img" aria-label="Population counts for 2011, 2016, and 2021"></div>
+          <div class="chart" id="national-chart" role="group" aria-label="Population counts and shares of the total population for 2011, 2016, and 2021"></div>
           <p class="chart-note">The latest available year in the supplied data is 2021. National totals are summed from the state and territory GCCSA areas.</p>
         </article>
       </section>
@@ -454,7 +492,7 @@
           <div>
             <p class="eyebrow">Explore the map</p>
             <h2 id="map-title">Where people live</h2>
-            <p id="map-subtitle">Hover over a state or territory for its population. Select it to explore LGAs.</p>
+            <p id="map-subtitle">Hover over a state or territory to see Aboriginal and/or Torres Strait Islander counts and population share. Select one to explore Local Government Areas (LGAs).</p>
           </div>
           <div class="map-controls">
             <button type="button" class="back-button" id="back-button" hidden>← All states</button>
@@ -535,8 +573,22 @@
         return stateSummaries.get(`${name}|${year}`);
       }
 
-      function metricForLga(name) {
-        return lgaRows.find((row) => row.region_name === name);
+      function metricForLga(name, year = selectedYear) {
+        return lgaRows.find((row) => row.region_name === name && row.census_year === year);
+      }
+
+      function previousCensusYear(year) {
+        return [2011, 2016, 2021].filter((candidate) => candidate < year).at(-1);
+      }
+
+      function changeDetails(current, previous, previousYear) {
+        if (!current || !previous || !previous.indigenous) return "";
+        const difference = current.indigenous - previous.indigenous;
+        const percentage = Math.abs(difference / previous.indigenous * 100).toFixed(1);
+        const direction = difference >= 0 ? "increased" : "decreased";
+        const style = difference >= 0 ? "increased" : "decreased";
+        const arrow = difference >= 0 ? "↗" : "↘";
+        return `<div class="tooltip-change ${style}">${arrow} ${numberFormat.format(Math.abs(difference))} (${percentage}%) ${direction} since ${previousYear}</div>`;
       }
 
       function colorForShare(share) {
@@ -561,9 +613,16 @@
           return `<div class="tooltip-title">${safeName}</div><div>No matching Census count is available.</div>`;
         }
         const percent = Number(metric.indigenous_proportion).toFixed(1);
+        const priorYear = previousCensusYear(metric.census_year ?? selectedYear);
+        const previousMetric = priorYear
+          ? (metric.region_type === "LGA"
+            ? metricForLga(name, priorYear)
+            : metricForState(name, priorYear))
+          : null;
         return `
           <div class="tooltip-title">${safeName}</div>
-          <div class="tooltip-value">${numberFormat.format(metric.indigenous)} people · ${percent}%</div>
+          <div class="tooltip-value">${numberFormat.format(metric.indigenous)} Aboriginal and/or Torres Strait Islander people · ${percent}%</div>
+          ${changeDetails(metric, previousMetric, priorYear)}
           <div>Total population: ${numberFormat.format(metric.total)}</div>
           <div>Non-Indigenous: ${numberFormat.format(metric.non_indigenous)} · Not stated: ${numberFormat.format(metric.not_stated)}</div>
           <div class="tooltip-note">“Aboriginal and/or Torres Strait Islander” is one combined ABS category.</div>`;
@@ -615,12 +674,13 @@
         setStatus(`Loading ${name} LGA counts…`);
         document.getElementById("back-button").hidden = false;
         document.getElementById("map-title").textContent = name;
-        document.getElementById("map-subtitle").textContent = "Hover over an LGA to see its combined Indigenous count and share of the total population.";
+        document.getElementById("map-subtitle").textContent = "Hover over a Local Government Area to see its Aboriginal and/or Torres Strait Islander count, population share, and change since the previous Census.";
         try {
-          const url = `/api/data?region_type=lga&state=${encodeURIComponent(name)}&year=${selectedYear}&limit=1000`;
+          const url = `/api/data?region_type=lga&state=${encodeURIComponent(name)}&limit=1000`;
           const payload = await fetchJson(url);
           lgaRows = payload.data;
-          showLgas(feature.properties.STE_CODE21, payload.total);
+          const currentYearRows = lgaRows.filter((row) => row.census_year === selectedYear);
+          showLgas(feature.properties.STE_CODE21, currentYearRows.length);
         } catch (error) {
           setStatus(error.message, true);
         }
@@ -633,7 +693,8 @@
           (feature) => feature.properties.STE_CODE21 === stateCode
         );
         const mappedNames = new Set(features.map((feature) => feature.properties.LGA_NAME21));
-        const outlyingRows = lgaRows.filter((row) => !mappedNames.has(row.region_name));
+        const currentRows = lgaRows.filter((row) => row.census_year === selectedYear);
+        const outlyingRows = currentRows.filter((row) => !mappedNames.has(row.region_name));
         const outlyingPanel = document.getElementById("outlying-areas");
         if (outlyingRows.length) {
           outlyingPanel.hidden = false;
@@ -641,7 +702,7 @@
             "<h3>Additional areas in this Census table</h3>" +
             "<p>These records are included in the source table but do not have a polygon in this state’s boundary layer.</p>" +
             `<div class="outlying-list">${outlyingRows.map((row) =>
-              `<span class="outlying-item">${escapeHtml(row.region_name)}: ${numberFormat.format(row.indigenous)} people (${Number(row.indigenous_proportion).toFixed(1)}%)</span>`
+              `<div class="outlying-item"><div>${escapeHtml(row.region_name)}: ${numberFormat.format(row.indigenous)} Aboriginal and/or Torres Strait Islander people (${Number(row.indigenous_proportion).toFixed(1)}%)</div>${changeDetails(row, previousCensusYear(selectedYear) ? metricForLga(row.region_name, previousCensusYear(selectedYear)) : null, previousCensusYear(selectedYear))}</div>`
             ).join("")}</div>`;
         } else {
           outlyingPanel.hidden = true;
@@ -672,7 +733,7 @@
         document.getElementById("outlying-areas").hidden = true;
         document.getElementById("back-button").hidden = true;
         document.getElementById("map-title").textContent = "Where people live";
-        document.getElementById("map-subtitle").textContent = "Hover over a state or territory for its population. Select it to explore LGAs.";
+        document.getElementById("map-subtitle").textContent = "Hover over a state or territory to see Aboriginal and/or Torres Strait Islander counts and population share. Select one to explore Local Government Areas (LGAs).";
         stateLayer = L.geoJSON(
           {
             type: "FeatureCollection",
@@ -690,9 +751,10 @@
         const years = [2011, 2016, 2021];
         const totals = years.map((year) => ({
           year,
-          value: summaryRows
-            .filter((row) => row.census_year === year)
+          value: summaryRows.filter((row) => row.census_year === year)
             .reduce((sum, row) => sum + row.indigenous, 0),
+          population: summaryRows.filter((row) => row.census_year === year)
+            .reduce((sum, row) => sum + row.total, 0),
         }));
         const latest = totals[2];
         const previous = totals[1];
@@ -700,7 +762,9 @@
         const changePercent = previous.value ? (difference / previous.value) * 100 : 0;
         document.getElementById("latest-total").textContent = numberFormat.format(latest.value);
         const increased = difference >= 0;
-        document.getElementById("change-summary").innerHTML =
+        const changeSummary = document.getElementById("change-summary");
+        changeSummary.classList.toggle("decreased", !increased);
+        changeSummary.innerHTML =
           `<span class="arrow" aria-hidden="true">${increased ? "↗" : "↘"}</span>` +
           `${increased ? "Increased" : "Decreased"} ${numberFormat.format(Math.abs(difference))} ` +
           `(${Math.abs(changePercent).toFixed(1)}%) since 2016`;
@@ -708,8 +772,12 @@
         document.getElementById("national-chart").innerHTML = totals
           .map((item, index) => {
             const height = maxValue ? Math.max(5, (item.value / maxValue) * 100) : 0;
+            const populationShare = item.population
+              ? (item.value / item.population * 100).toFixed(1)
+              : "0.0";
+            const tooltip = `${item.year}: ${numberFormat.format(item.value)} Aboriginal and/or Torres Strait Islander people, ${populationShare}% of the total population`;
             return `
-              <div class="bar-column ${index === totals.length - 1 ? "latest" : ""}" aria-label="${item.year}: ${numberFormat.format(item.value)} people">
+              <div class="bar-column ${index === totals.length - 1 ? "latest" : ""}" role="img" tabindex="0" title="${tooltip}" aria-label="${tooltip}">
                 <span class="bar-value">${numberFormat.format(item.value)}</span>
                 <span class="bar-track"><span class="bar" style="height:${height}%"></span></span>
                 <span class="bar-year">${item.year}</span>
