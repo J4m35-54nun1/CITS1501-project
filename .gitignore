@@ -10,3 +10,5 @@ Thumbsdb
 
 # Secret files
 .env
+.venv/
+.venv-1
