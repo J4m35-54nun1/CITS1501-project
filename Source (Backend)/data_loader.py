@@ -181,8 +181,9 @@ def get_data():
         supported = ", ".join(DATASET_LOADERS)
         raise BadRequest(f"Unsupported region_type. Choose from: {supported}.")
 
+    year_value = request.args.get("year")
     year = _parse_integer_query("year", 0)
-    if year and year not in AVAILABLE_YEARS:
+    if year_value is not None and year not in AVAILABLE_YEARS:
         supported_years = ", ".join(map(str, AVAILABLE_YEARS))
         raise BadRequest(f"Unsupported year. Choose from: {supported_years}.")
 
@@ -210,7 +211,7 @@ def get_data():
             data = data.loc[data["region_type"].str.lower() == "regional"]
         else:
             data = data.loc[data["region_type"].str.lower() == region_type]
-    if year:
+    if year_value is not None:
         data = data.loc[data["census_year"] == year]
 
     search = request.args.get("region_name", "").strip()

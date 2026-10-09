@@ -106,3 +106,28 @@ def test_data_endpoint_rejects_invalid_filters():
 
     assert response.status_code == 400
     assert "Unsupported region_type" in response.get_json()["error"]
+
+def test_state_summaries_include_each_state_for_each_year():
+    payload = app.test_client().get("/api/states").get_json()
+    pairs = {
+        (row["state_name"], row["census_year"])
+        for row in payload["data"]
+    }
+
+    expected_states = {
+        "Australian Capital Territory",
+        "New South Wales",
+        "Northern Territory",
+        "Queensland",
+        "South Australia",
+        "Tasmania",
+        "Victoria",
+        "Western Australia",
+    }
+    expected = {
+        (state, year)
+        for state in expected_states
+        for year in (2011, 2016, 2021)
+    }
+
+    assert pairs == expected
