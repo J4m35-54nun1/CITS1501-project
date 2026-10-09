@@ -7,7 +7,7 @@ The **Australian Aboriginal and Torres Strait Islander population Explorer** ena
 
 ## Dataset Information
 * **Source:** Australian Bureau of Statistics (ABS) 2021 Census
-* **Coverage:** 567 Local Government Areas (LGAs) across 8 states and Territories
+* **Coverage:** Local Government Areas (LGAs) across 8 states and Territories
 * **Licensing** Creative Commons Attribution 4.0 international (CC BY 4.0)
 
 ## Setup Instructions
