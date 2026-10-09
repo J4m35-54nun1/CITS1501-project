@@ -42,6 +42,48 @@ launcher does not use Flask's development reloader and closes its listening
 socket when interrupted. If the service was started in another terminal, stop
 it from that terminal; Ctrl+C in a different terminal cannot interrupt it.
 
+## Deploying on PythonAnywhere
+
+1. Upload or clone the project onto PythonAnywhere, preserving the repository
+   layout, including `Source (Backend)`, `Data (Database)`, and
+   `Interface (Frontend)/assets`.
+2. In a PythonAnywhere Bash console, create a virtual environment using the
+   Python version selected for your web app, then install the project
+   dependencies:
+
+   ```bash
+   mkvirtualenv --python=/usr/bin/python3.11 census-env
+   pip install -r /home/yourusername/CITS1501/requirements.txt
+   ```
+
+   Replace `yourusername`, the project directory, and Python version with the
+   values available in your PythonAnywhere account. If using a virtualenv
+   created from the Web tab, activate that environment before installing.
+3. In the PythonAnywhere **Web** tab, create a Flask web app and set its
+   virtualenv path to the environment above.
+4. In the WSGI configuration file linked from the Web tab, replace its contents
+   with the following, changing `yourusername` and the project path:
+
+   ```python
+   import sys
+
+   project_home = "/home/yourusername/CITS1501"
+   interface_dir = project_home + "/Interface (Frontend)"
+
+   if project_home not in sys.path:
+       sys.path.insert(0, project_home)
+   if interface_dir not in sys.path:
+       sys.path.insert(0, interface_dir)
+
+   from web_app import application
+   ```
+
+   `web_app.py` adds `Source (Backend)` to Python's import path and exposes the
+   Flask application as `application`, which the WSGI server expects.
+5. Click **Reload** in the Web tab, then open the PythonAnywhere site URL.
+   If it does not load, inspect the error log linked in that tab. The source CSV
+   files and generated boundary GeoJSON must be present at their project paths.
+
 The map uses official 2021 ABS State/Territory and LGA boundaries, converted to
 GeoJSON at `Interface (Frontend)/assets/australia_boundaries_2021.json`. The
 source archives are available from the
